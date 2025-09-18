@@ -1,13 +1,66 @@
 <!DOCTYPE html>
 <html lang="">
   <head>
+
     <meta charset="UTF-8">
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <link rel="stylesheet" href="/frontend/styles/index.css">
+    <link rel="stylesheet" href="/frontend/styles/floating-elements.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+    <title>Gamificação de maratonas</title>
+
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+
+    <!-- Background animado com elementos flutuantes -->
+    <div class="bg-decor">
+        <div class="starfield"></div>
+
+        <!-- Elementos flutuantes distribuídos por toda a página -->
+        <div class="pixel-icon pixel-heart"></div>
+        <div class="pixel-icon pixel-coin"></div>
+        <div class="pixel-icon pixel-joystick"></div>
+        
+        <!-- Primeira camada de elementos adicionais -->
+        <div class="pixel-icon pixel-star"></div>
+        <div class="pixel-icon pixel-diamond"></div>
+        <div class="pixel-icon pixel-gem"></div>
+        <div class="pixel-icon pixel-crown"></div>
+        <div class="pixel-icon pixel-shield"></div>
+        <div class="pixel-icon pixel-sword"></div>
+        
+        <!-- Segunda camada - mais elementos para melhor distribuição -->
+        <div class="pixel-icon pixel-key"></div>
+        <div class="pixel-icon pixel-crystal"></div>
+        <div class="pixel-icon pixel-trophy"></div>
+        <div class="pixel-icon pixel-potion"></div>
+        <div class="pixel-icon pixel-orb"></div>
+        <div class="pixel-icon pixel-coin2"></div>
+        <div class="pixel-icon pixel-star2"></div>
+        <div class="pixel-icon pixel-gem2"></div>
+    </div>
+
+    <header>
+      <h1>
+        <div class="title-line">
+          THE <span class="code">CODE</span>
+        </div>
+        <div class="title-line">
+          ARENA
+        </div>
+      </h1>
+    </header>
+
+    <div class="home">
+      <a href="home.html" class="btn-pixel">Iniciar</a>
+    </div>
+    
   </body>
 </html>
