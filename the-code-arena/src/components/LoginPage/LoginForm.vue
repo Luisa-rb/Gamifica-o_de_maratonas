@@ -128,6 +128,10 @@ const handleSubmit = () => {
   if (isLogin.value) {
     console.log('Login:', loginData)
     // Aqui você implementaria a lógica de login
+    // Simulando login bem-sucedido
+    setTimeout(() => {
+      window.location.href = '/home'
+    }, 1000)
   } else {
     if (registerData.password !== registerData.confirmPassword) {
       alert('As senhas não coincidem!')
@@ -135,6 +139,10 @@ const handleSubmit = () => {
     }
     console.log('Register:', registerData)
     // Aqui você implementaria a lógica de cadastro
+    // Simulando cadastro bem-sucedido
+    setTimeout(() => {
+      window.location.href = '/home'
+    }, 1000)
   }
 }
 </script>

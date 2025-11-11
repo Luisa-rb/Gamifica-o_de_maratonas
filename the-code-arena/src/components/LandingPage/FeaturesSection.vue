@@ -11,7 +11,6 @@
           <div class="feature-icon">{{ f.icon }}</div>
           <h4>{{ f.title }}</h4>
           <p>{{ f.desc }}</p>
-          <div class="feature-accent"></div>
         </div>
       </div>
     </div>
@@ -112,18 +111,10 @@ const features = [
   margin-bottom: 1.5rem;
 }
 
-.feature:hover .feature-accent {
-  opacity: 1;
-}
-
 /* Cores específicas para cada feature */
 .feature-1:hover {
   border-color: var(--color-blue);
   box-shadow: 0 20px 40px rgba(59, 183, 206, 0.2);
-}
-
-.feature-1 .feature-accent {
-  background: linear-gradient(90deg, var(--color-blue), var(--color-cyan));
 }
 
 .feature-2:hover {
@@ -131,17 +122,9 @@ const features = [
   box-shadow: 0 20px 40px rgba(244, 211, 94, 0.2);
 }
 
-.feature-2 .feature-accent {
-  background: linear-gradient(90deg, var(--color-yellow), var(--color-red));
-}
-
 .feature-3:hover {
   border-color: var(--color-pink);
   box-shadow: 0 20px 40px rgba(216, 17, 89, 0.2);
-}
-
-.feature-3 .feature-accent {
-  background: linear-gradient(90deg, var(--color-pink), var(--color-yellow));
 }
 
 /* Responsividade */
