@@ -4,7 +4,7 @@
       <h2 class="hero-title">Bem-vindo(a)!</h2>
       <p class="hero-sub">A Arena é seu refúgio nas maratonas de programação. Seja parte dessa comunidade!</p>
       <div class="login-button">
-      <a href="#participants" class="btn-pixel">Entrar na comunidade</a>
+        <router-link to="/login" class="btn-pixel">Entrar na comunidade</router-link>
       </div>  
     </div>
   </section>
