@@ -9,7 +9,7 @@
         <textarea v-model="message" placeholder="Mensagem" rows="4"></textarea>
         <button type="submit" class="btn-pixel">Enviar</button>
       </form>
-      <p class="note">*ainda não sei o que colocar aqui e temos que conectar com backend depois.</p>
+      <p class="note">*ainda não sei o que colocar aqui e temos que conectar com o banco de dados depois.</p>
     </div>
   </section>
 </template>
