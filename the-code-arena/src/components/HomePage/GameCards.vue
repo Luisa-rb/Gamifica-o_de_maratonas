@@ -36,10 +36,17 @@ const gameCards = ref([
   },
   {
     id: 3,
-    title: 'Próximas Maratonas',
+    title: 'Próximos Eventos',
     icon: '🗓️',
     desc: 'Saiba quais são as próximas competições e maratonas.',
-    route: '/marathons'
+    route: '/nextEvents'
+  },
+  {
+    id: 4,
+    title: 'Eventos anteriores',
+    icon: '🗓️',
+    desc: 'Saiba detalhes das últimas competições e maratonas.',
+    route: '/previousEvents'
   }
 ])
 </script>
@@ -56,14 +63,16 @@ const gameCards = ref([
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 550px;
+  margin: 0 auto;
 }
 
 .feature {
   background: rgba(255, 255, 255, 0.08);
-  padding: 2rem;
-  border-radius: 16px;
+  padding: 1.5rem;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   transition: all 0.3s ease;
@@ -80,22 +89,23 @@ const gameCards = ref([
 }
 
 .feature-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
   display: block;
 }
 
 .feature h4 {
   color: var(--color-yellow);
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
   font-weight: bold;
 }
 
 .feature p {
   color: #dcdcdc;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
 /* Cores específicas para cada feature */
@@ -116,6 +126,10 @@ const gameCards = ref([
   box-shadow: 0 20px 40px rgba(59, 183, 206, 0.2);
 }
 
+.feature-4:hover {
+  border-color: var(--color-cyan);
+  box-shadow: 0 20px 40px rgba(59, 206, 172, 0.2);
+}
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -124,12 +138,20 @@ const gameCards = ref([
   }
   
   .grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    max-width: 450px;
+    gap: 1.2rem;
   }
   
   .feature {
-    padding: 1.5rem;
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 350px;
+    gap: 1.2rem;
   }
 }
 
