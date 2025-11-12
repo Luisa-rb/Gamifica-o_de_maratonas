@@ -31,21 +31,28 @@ const gameCards = ref([
     id: 2,
     title: 'Medalhas',
     icon: '🎖️',
-    desc: 'Visualize suas conquistas em realidade aumentada.',
+    desc: 'Visualize suas conquistas e participações.',
     route: '/medals'
   },
   {
     id: 3,
+    title: 'Equipes',
+    icon: '👥',
+    desc: 'Gerencie suas equipes e histórico de participações.',
+    route: '/teams'
+  },
+  {
+    id: 4,
     title: 'Próximos Eventos',
     icon: '🗓️',
     desc: 'Saiba quais são as próximas competições e maratonas.',
     route: '/nextEvents'
   },
   {
-    id: 4,
+    id: 5,
     title: 'Eventos anteriores',
-    icon: '🗓️',
-    desc: 'Saiba detalhes das últimas competições e maratonas.',
+    icon: '�',
+    desc: 'Consulte detalhes das últimas competições e maratonas.',
     route: '/previousEvents'
   }
 ])
@@ -63,9 +70,9 @@ const gameCards = ref([
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  max-width: 550px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -120,7 +127,6 @@ const gameCards = ref([
   box-shadow: 0 20px 40px rgba(216, 17, 89, 0.2);
 }
 
-
 .feature-3:hover {
   border-color: var(--color-blue);
   box-shadow: 0 20px 40px rgba(59, 183, 206, 0.2);
@@ -129,6 +135,11 @@ const gameCards = ref([
 .feature-4:hover {
   border-color: var(--color-cyan);
   box-shadow: 0 20px 40px rgba(59, 206, 172, 0.2);
+}
+
+.feature-5:hover {
+  border-color: var(--color-blue);
+  box-shadow: 0 20px 40px rgba(59, 183, 206, 0.2);
 }
 
 /* Responsividade */

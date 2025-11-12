@@ -1,33 +1,34 @@
 <template>
-  <div class="home-page">
+  <div class="medal-page">
     <FloatingElements />
     <TopBar />
     
+    <!-- Título da página -->
     <div class="title-container">
-      <h1>Bem-vindo(a)!</h1>
-      <p>A Arena é seu refúgio Dev nas maratonas de programação!</p>
+      <h1>🏆 Suas Medalhas</h1>
+      <p>Conquistas desbloqueadas nas maratonas de programação</p>
     </div>
 
-    <GameCards />
+    <MedalGrid />
   </div>
 </template>
 
 <script setup>
 import TopBar from '@/components/HomePage/TopBar.vue'
 import FloatingElements from '@/components/HomePage/FloatingElements.vue'
-import GameCards from '@/components/HomePage/GameCards.vue'
+import MedalGrid from '@/components/MedalPage/MedalGrid.vue'
 </script>
 
 <style scoped>
-/* Background gradiente para toda a home page */
-.home-page {
+/* Background gradiente para toda a medal page */
+.medal-page {
   background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a0a1a 100%);
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
 }
 
-.home-page::before {
+.medal-page::before {
   content: '';
   position: absolute;
   top: 0;
