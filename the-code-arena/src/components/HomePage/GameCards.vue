@@ -1,17 +1,19 @@
 <template>
   <main class="card-container">
     <div class="grid">
-      <router-link 
+      <component
         v-for="(card, index) in gameCards" 
         :key="card.id"
-        :to="card.route" 
+        :is="card.disabled ? 'div' : 'router-link'"
+        :to="card.disabled ? undefined : card.route" 
         class="feature"
-        :class="`feature-${index + 1}`"
+        :class="[`feature-${index + 1}`, { disabled: card.disabled }]"
       >
         <div class="feature-icon">{{ card.icon }}</div>
+        <div v-if="card.disabled" class="lock-icon">🔒</div>
         <h4>{{ card.title }}</h4>
         <p>{{ card.desc }}</p>
-      </router-link>
+      </component>
     </div>
   </main>
 </template>
@@ -24,8 +26,9 @@ const gameCards = ref([
     id: 1,
     title: 'Rankings',
     icon: '🏆',
-    desc: 'Acompanhe sua evolução em tempo real.',
-    route: '/rankings'
+    desc: 'Em manutenção. Em breve disponível.',
+    route: '/rankings',
+    disabled: true
   },
   {
     id: 2,
@@ -43,18 +46,11 @@ const gameCards = ref([
   },
   {
     id: 4,
-    title: 'Próximos Eventos',
+    title: 'Eventos',
     icon: '🗓️',
-    desc: 'Saiba quais são as próximas competições e maratonas.',
-    route: '/nextEvents'
+    desc: 'Próximas competições e histórico de participações.',
+    route: '/events'
   },
-  {
-    id: 5,
-    title: 'Eventos anteriores',
-    icon: '�',
-    desc: 'Consulte detalhes das últimas competições e maratonas.',
-    route: '/previousEvents'
-  }
 ])
 </script>
 
@@ -70,9 +66,10 @@ const gameCards = ref([
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 1.5rem;
-  max-width: 900px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -93,6 +90,26 @@ const gameCards = ref([
   transform: translateY(-8px);
   border-color: var(--color-cyan);
   box-shadow: 0 20px 40px rgba(59, 206, 172, 0.2);
+}
+
+.feature.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(100%);
+}
+
+.feature.disabled:hover {
+  transform: none;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+.lock-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.2rem;
+  color: #666;
 }
 
 .feature-icon {
@@ -116,11 +133,10 @@ const gameCards = ref([
 }
 
 /* Cores específicas para cada feature */
-.feature-1:hover {
+.feature-1:hover:not(.disabled) {
   border-color: var(--color-yellow);
   box-shadow: 0 20px 40px rgba(244, 211, 94, 0.2);
 }
-
 
 .feature-2:hover {
   border-color: var(--color-pink);
@@ -137,11 +153,6 @@ const gameCards = ref([
   box-shadow: 0 20px 40px rgba(59, 206, 172, 0.2);
 }
 
-.feature-5:hover {
-  border-color: var(--color-blue);
-  box-shadow: 0 20px 40px rgba(59, 183, 206, 0.2);
-}
-
 /* Responsividade */
 @media (max-width: 768px) {
   .card-container {
@@ -149,7 +160,7 @@ const gameCards = ref([
   }
   
   .grid {
-    max-width: 450px;
+    max-width: 500px;
     gap: 1.2rem;
   }
   
@@ -158,17 +169,16 @@ const gameCards = ref([
   }
 }
 
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
-    max-width: 350px;
-    gap: 1.2rem;
-  }
-}
-
 @media (max-width: 480px) {
   .card-container {
     margin: 2.5rem auto 2rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    max-width: 300px;
+    gap: 1rem;
   }
   
   .feature {

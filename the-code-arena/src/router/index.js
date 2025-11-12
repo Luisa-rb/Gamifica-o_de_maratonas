@@ -4,6 +4,7 @@ import LoginPage from '../views/LoginPage.vue'
 import HomePage from '../views/HomePage.vue'
 import MedalPage from '../views/MedalPage.vue'
 import TeamsPage from '../views/TeamsPage.vue'
+import EventsPage from '../views/EventsPage.vue'
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
         path: '/teams',
         name: 'teams',
         component: TeamsPage
+    },
+    {
+        path: '/events',
+        name: 'events',
+        component: EventsPage
     }
 ]
 
