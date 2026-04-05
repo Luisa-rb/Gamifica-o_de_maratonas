@@ -11,7 +11,7 @@
         </div>
         <HeroSection />
       </section>
-      
+
       <AboutSection />
       <FeaturesSection />
       <ParticipantsSection />
@@ -36,6 +36,7 @@ import FooterSection from '@/components/LandingPage/FooterSection.vue'
 .home {
   background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a0a1a 100%);
   min-height: 100vh;
+  min-height: 100svh;
   position: relative;
 }
 
@@ -47,16 +48,9 @@ import FooterSection from '@/components/LandingPage/FooterSection.vue'
   right: 0;
   bottom: 0;
   background: radial-gradient(circle at 30% 30%, rgba(244, 211, 94, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 70% 70%, rgba(59, 206, 172, 0.1) 0%, transparent 50%);
+    radial-gradient(circle at 70% 70%, rgba(59, 206, 172, 0.1) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
-}
-
-/* ajuste específico css da landing */
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
 }
 
 main {
@@ -68,6 +62,7 @@ main {
 /* seção combinada título + hero */
 .title-hero-section {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,16 +106,12 @@ main {
   border-radius: 0;
 }
 
-main {
-  width: 100%;
-}
-
 /* Responsividade */
 @media (max-width: 900px) {
   .title-container h1 {
     font-size: 6rem;
   }
-  
+
   .title-hero-section {
     gap: 2rem;
   }
@@ -130,11 +121,10 @@ main {
   .title-container h1 {
     font-size: 3.6rem;
   }
-  
+
   .title-hero-section {
     padding: 1rem;
     gap: 1.5rem;
   }
 }
-
 </style>

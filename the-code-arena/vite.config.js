@@ -7,7 +7,14 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          // Configuração para o vue, que diz: se tag começar com a-, não tente compilar como componente Vue"
+          isCustomElement: (tag) => tag.startsWith('a-')
+        }
+      }
+    }),
     vueDevTools(),
   ],
   resolve: {
