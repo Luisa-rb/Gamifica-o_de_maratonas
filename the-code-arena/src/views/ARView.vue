@@ -5,9 +5,10 @@
         <div v-if="arErro" class="ar-erro">{{ arErro }}</div>
         <div v-if="!arErro && !arPronto" class="ar-loader">Iniciando camera...</div>
 
-        <a-scene v-if="arIniciado" embedded style="position: fixed; inset: 0;" renderer="logarithmicDepthBuffer: true;"
-            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" vr-mode-ui="enabled: false"
-            @loaded="arPronto = true">
+        <a-scene v-if="arIniciado" class="ar-scene"
+            style="position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100svh; display: block; overflow: hidden; background: transparent;"
+            renderer="alpha: true; antialias: true; logarithmicDepthBuffer: true;" :arjs="arJsConfig"
+            vr-mode-ui="enabled: false" @loaded="arPronto = true">
             <a-nft type="nft" url="image/trex" smooth="true" smoothCount="10">
                 <a-entity gltf-model="image/Tree.glb" scale="5 5 5" position="50 150 -100"
                     rotation="-90 0 0"></a-entity>
@@ -24,6 +25,7 @@ import { onMounted, onBeforeUnmount, ref } from 'vue';
 const arIniciado = ref(false);
 const arPronto = ref(false);
 const arErro = ref('');
+const arJsConfig = ref('trackingMethod: best; sourceType: webcam; debugUIEnabled: false;');
 let htmlClasseAnterior = '';
 let bodyClasseAnterior = '';
 let arEncerrado = false;
@@ -109,8 +111,23 @@ const voltarParaLanding = () => {
 onMounted(() => {
     htmlClasseAnterior = document.documentElement.className;
     bodyClasseAnterior = document.body.className;
+    document.documentElement.classList.add('ar-mode');
+    document.body.classList.add('ar-mode');
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
+
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    arJsConfig.value = [
+        'trackingMethod: best',
+        'sourceType: webcam',
+        `sourceWidth: ${viewportWidth}`,
+        `sourceHeight: ${viewportHeight}`,
+        `displayWidth: ${viewportWidth}`,
+        `displayHeight: ${viewportHeight}`,
+        'debugUIEnabled: false'
+    ].join('; ') + ';';
+
     iniciarAR();
 });
 
@@ -118,6 +135,10 @@ onBeforeUnmount(() => {
     encerrarAR();
     document.documentElement.style.overflow = 'auto';
     document.body.style.overflow = 'auto';
+    document.documentElement.classList.remove('ar-mode');
+    document.body.classList.remove('ar-mode');
+    document.documentElement.className = htmlClasseAnterior;
+    document.body.className = bodyClasseAnterior;
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 });
 </script>
@@ -130,11 +151,22 @@ onBeforeUnmount(() => {
     height: 100vh;
     height: 100svh;
     z-index: 9999;
-    background: #000;
+    background: transparent;
+    overflow: hidden;
 }
 
 .ar-page.is-ready {
     background: transparent;
+}
+
+.ar-scene {
+    position: fixed;
+    inset: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    display: block;
+    background: transparent !important;
 }
 
 .btn-voltar {
@@ -175,19 +207,44 @@ onBeforeUnmount(() => {
     max-width: min(90vw, 560px);
 }
 
-:global(video.arjs-video),
+:global(video),
 :global(#arjs-video),
 :global(.a-canvas),
-:global(canvas.a-canvas) {
+:global(canvas),
+:global(.arjs-video) {
     position: fixed !important;
     inset: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
     height: 100svh !important;
+    background: transparent !important;
 }
 
-:global(video.arjs-video),
-:global(#arjs-video) {
+:global(a-scene.ar-scene),
+:global(a-scene.ar-scene canvas),
+:global(a-scene.ar-scene video) {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    background: transparent !important;
+}
+
+:global(html.ar-mode),
+:global(body.ar-mode),
+:global(#app.ar-mode) {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: transparent !important;
+}
+
+:global(video),
+:global(#arjs-video),
+:global(.arjs-video) {
     object-fit: cover !important;
     transform: scaleX(-1) !important;
     transform-origin: center center !important;
@@ -195,7 +252,7 @@ onBeforeUnmount(() => {
 }
 
 :global(.a-canvas),
-:global(canvas.a-canvas) {
+:global(canvas) {
     transform: scaleX(-1) !important;
     transform-origin: center center !important;
     z-index: 9998 !important;
