@@ -20,18 +20,43 @@ const name = ref('')
 const email = ref('')
 const message = ref('')
 
-function onSubmit(){
+function onSubmit() {
   alert(`Obrigado, ${name.value || 'participante'}! Mensagem recebida.`)
-  name.value=''
-  email.value=''
-  message.value=''
+  name.value = ''
+  email.value = ''
+  message.value = ''
 }
 </script>
 
 <style scoped>
-.contact{padding:3rem 1rem}
-.container{max-width:700px;margin:0 auto}
-.contact-form{display:flex;flex-direction:column;gap:0.5rem;margin-top:1rem}
-.contact-form input, .contact-form textarea{padding:0.6rem;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:inherit}
-.note{font-size:0.85rem;color:#bfbfbf;margin-top:0.5rem}
+.contact {
+  padding: 3rem 1rem
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: inherit
+}
+
+.note {
+  font-size: 0.85rem;
+  color: #bfbfbf;
+  margin-top: 0.5rem
+}
 </style>
