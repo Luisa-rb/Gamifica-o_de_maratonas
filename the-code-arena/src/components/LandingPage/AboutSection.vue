@@ -6,12 +6,13 @@
       <div class="project-intro">
         <p>
           <strong>The Code Arena</strong> é uma plataforma web gamificada desenvolvida para incentivar a participação de estudantes de Computação nas competições de programação da UnB, especialmente entre calouros e iniciantes. Observa-se que muitos alunos recém-ingressos não participam das maratonas de programação por diversos motivos, como desconhecimento sobre o funcionamento das competições, insegurança em relação ao nível técnico exigido ou falta de motivação.
-
+        </p>
+        <p>
           Com isso em mente, criamos uma experiência interativa que combina elementos digitais e físicos, utilizando estratégias de gamificação para tornar as competições mais atrativas e envolventes. Acreditamos que essa abordagem pode fortalecer o senso de pertencimento à comunidade acadêmica, desenvolver habilidades valorizadas pelo mercado e enriquecer o currículo dos participantes com experiências relevantes e reconhecidas.
         </p>
       </div>
         
-        <div class="features-grid">
+        <!-- <div class="features-grid">
           <div class="feature-card">
             <h5>🏆 Rankings e Estatísticas</h5>
             <p>Visualize sua evolução, histórico de participação e compare seu desempenho com outros competidores.</p>
@@ -31,7 +32,7 @@
             <h5>👥 Comunidade Ativa</h5>
             <p>Conecte-se com outros participantes, mentores e amantes da computação em um ambiente colaborativo.</p>
           </div>
-        </div>
+        </div> -->
 
         <h3>Objetivos do Projeto</h3>
         <ul class="objectives-list">
@@ -55,7 +56,7 @@
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 62.5rem;
   margin: 0 auto;
   text-align: center;
 }

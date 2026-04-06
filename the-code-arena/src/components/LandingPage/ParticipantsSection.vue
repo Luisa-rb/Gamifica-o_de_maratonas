@@ -27,11 +27,51 @@ const sample = ref([
 </script>
 
 <style scoped>
-.participants{padding:3rem 1rem}
-.container{max-width:1000px;margin:0 auto;text-align:center}
-.cards{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;justify-content:center}
-.card{background:rgba(255,255,255,0.03);padding:1rem;border-radius:10px;display:flex;align-items:center;gap:0.75rem;min-width:220px}
-.avatar{width:56px;height:56px;border-radius:8px;background:var(--color-blue);display:flex;align-items:center;justify-content:center;font-weight:700}
-.meta strong{display:block}
-.role{font-size:0.85rem;color:#bfbfbf}
+.participants {
+  padding: 3rem 1rem
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center
+}
+
+.cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  justify-content: center
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 220px
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  background: var(--color-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700
+}
+
+.meta strong {
+  display: block
+}
+
+.role {
+  font-size: 0.85rem;
+  color: #bfbfbf
+}
 </style>

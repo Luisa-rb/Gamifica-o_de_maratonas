@@ -13,9 +13,9 @@
       </section>
 
       <AboutSection />
-      <FeaturesSection />
+      <!-- <FeaturesSection /> -->
       <ParticipantsSection />
-      <ContactSection />
+      <!-- <ContactSection /> -->
     </main>
 
     <FooterSection />
@@ -26,8 +26,8 @@
 import HeroSection from '@/components/LandingPage/HeroSection.vue'
 import AboutSection from '@/components/LandingPage/AboutSection.vue'
 import ParticipantsSection from '@/components/LandingPage/ParticipantsSection.vue'
-import FeaturesSection from '@/components/LandingPage/FeaturesSection.vue'
-import ContactSection from '@/components/LandingPage/ContactSection.vue'
+// import FeaturesSection from '@/components/LandingPage/FeaturesSection.vue'
+// import ContactSection from '@/components/LandingPage/ContactSection.vue'
 import FooterSection from '@/components/LandingPage/FooterSection.vue'
 </script>
 
@@ -76,7 +76,7 @@ main {
   display: flex;
   flex-direction: column;
   line-height: 1.1;
-  font-size: 9rem;
+  font-size: 10rem;
   text-transform: uppercase;
   text-shadow:
     -2px -2px 0 #ff0000,
