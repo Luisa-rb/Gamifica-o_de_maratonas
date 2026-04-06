@@ -12,9 +12,9 @@
         <HeroSection />
       </section>
 
+      <ParticipantsSection />
       <AboutSection />
       <!-- <FeaturesSection /> -->
-      <ParticipantsSection />
       <!-- <ContactSection /> -->
     </main>
 
@@ -24,8 +24,8 @@
 
 <script setup>
 import HeroSection from '@/components/LandingPage/HeroSection.vue'
-import AboutSection from '@/components/LandingPage/AboutSection.vue'
 import ParticipantsSection from '@/components/LandingPage/ParticipantsSection.vue'
+import AboutSection from '@/components/LandingPage/AboutSection.vue'
 // import FeaturesSection from '@/components/LandingPage/FeaturesSection.vue'
 // import ContactSection from '@/components/LandingPage/ContactSection.vue'
 import FooterSection from '@/components/LandingPage/FooterSection.vue'
