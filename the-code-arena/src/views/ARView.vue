@@ -21,6 +21,7 @@
 
 <script setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const arIniciado = ref(false);
 const arPronto = ref(false);
@@ -29,6 +30,7 @@ const arJsConfig = ref('trackingMethod: best; sourceType: webcam; debugUIEnabled
 let htmlClasseAnterior = '';
 let bodyClasseAnterior = '';
 let arEncerrado = false;
+const router = useRouter();
 
 const encerrarAR = () => {
     if (arEncerrado) return;
@@ -104,8 +106,7 @@ const iniciarAR = async () => {
 
 const voltarParaLanding = () => {
     encerrarAR();
-    // AR.js altera estado global do documento. Recarregar a landing evita layout preso.
-    window.location.assign('/');
+    router.replace({ name: 'landing' });
 };
 
 onMounted(() => {
