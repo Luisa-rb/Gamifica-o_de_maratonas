@@ -1,14 +1,26 @@
 <template>
     <section class="ar-page" :class="{ 'is-ready': arPronto }">
-        <button @click="voltarParaLanding" class="btn-voltar">Voltar para a Arena</button>
+        <div class="ar-top-controls">
+            <button @click="voltarParaLanding" class="btn-voltar">Voltar para a Arena</button>
+
+            <div class="camera-switch" role="group" aria-label="Selecionar camera">
+                <button class="btn-camera" :class="{ active: cameraMode === 'environment' }"
+                    @click="trocarCamera('environment')">
+                    Traseira
+                </button>
+                <button class="btn-camera" :class="{ active: cameraMode === 'user' }" @click="trocarCamera('user')">
+                    Frontal
+                </button>
+            </div>
+        </div>
 
         <div v-if="arErro" class="ar-erro">{{ arErro }}</div>
         <div v-if="!arErro && !arPronto" class="ar-loader">Iniciando camera...</div>
 
-        <a-scene v-if="arIniciado" class="ar-scene"
+        <a-scene v-if="arIniciado" :key="sceneKey" class="ar-scene"
             style="position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100svh; display: block; overflow: hidden; background: transparent;"
-            renderer="alpha: true; antialias: true; logarithmicDepthBuffer: true;" :arjs="arJsConfig"
-            vr-mode-ui="enabled: false" @loaded="arPronto = true">
+            renderer="alpha: true; antialias: true; logarithmicDepthBuffer: true;" :arjs="arJsConfig" embedded
+            device-orientation-permission-ui="enabled: false" vr-mode-ui="enabled: false" @loaded="onSceneLoaded">
             <a-nft type="nft" url="image/trex" smooth="true" smoothCount="10">
                 <a-entity gltf-model="image/Tree.glb" scale="5 5 5" position="50 150 -100"
                     rotation="-90 0 0"></a-entity>
@@ -20,22 +32,44 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const arIniciado = ref(false);
 const arPronto = ref(false);
 const arErro = ref('');
-const arJsConfig = ref('trackingMethod: best; sourceType: webcam; debugUIEnabled: false;');
+const arJsConfig = ref('trackingMethod: best; sourceType: webcam; facingMode: environment; debugUIEnabled: false;');
+const cameraMode = ref('environment');
+const sceneKey = ref(0);
 let htmlClasseAnterior = '';
 let bodyClasseAnterior = '';
-let arEncerrado = false;
+let appClasseAnterior = '';
 const router = useRouter();
+let resizeTimeoutId;
+let mudouOrientacao = false;
+
+const atualizarViewport = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--app-vh', `${vh}px`);
+};
+
+const montarArJsConfig = () => {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    arJsConfig.value = [
+        'trackingMethod: best',
+        'sourceType: webcam',
+        `facingMode: ${cameraMode.value}`,
+        `sourceWidth: ${viewportWidth}`,
+        `sourceHeight: ${viewportHeight}`,
+        `displayWidth: ${viewportWidth}`,
+        `displayHeight: ${viewportHeight}`,
+        'debugUIEnabled: false'
+    ].join('; ') + ';';
+};
 
 const encerrarAR = () => {
-    if (arEncerrado) return;
-    arEncerrado = true;
-
     arIniciado.value = false;
     arPronto.value = false;
 
@@ -74,6 +108,9 @@ const encerrarAR = () => {
 
 const iniciarAR = async () => {
     arErro.value = '';
+    arPronto.value = false;
+    arIniciado.value = false;
+    montarArJsConfig();
 
     if (!window.isSecureContext) {
         arErro.value = 'Para usar a camera, abra o projeto via localhost (Vite) ou HTTPS.';
@@ -86,11 +123,14 @@ const iniciarAR = async () => {
     }
 
     try {
-        // Tenta camera frontal para comportamento de espelho; se falhar, usa camera padrao.
         let stream;
         try {
             stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'user' },
+                video: {
+                    facingMode: { ideal: cameraMode.value },
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
                 audio: false
             });
         } catch {
@@ -98,10 +138,49 @@ const iniciarAR = async () => {
         }
         stream.getTracks().forEach((track) => track.stop());
 
+        sceneKey.value += 1;
+        await nextTick();
         arIniciado.value = true;
+
+        requestAnimationFrame(() => {
+            const videos = document.querySelectorAll('video, #arjs-video, .arjs-video');
+            videos.forEach((videoEl) => {
+                videoEl.setAttribute('data-facing', cameraMode.value);
+            });
+            window.dispatchEvent(new Event('resize'));
+        });
     } catch {
         arErro.value = 'Permissao da camera bloqueada. Libere a camera nas configuracoes do navegador.';
     }
+};
+
+const onSceneLoaded = (event) => {
+    const renderer = event.target?.renderer;
+    if (renderer?.setClearColor) {
+        renderer.setClearColor(0x000000, 0);
+    }
+    arPronto.value = true;
+};
+
+const tratarMudancaDeOrientacao = () => {
+    if (mudouOrientacao) return;
+    mudouOrientacao = true;
+    atualizarViewport();
+
+    if (resizeTimeoutId) {
+        window.clearTimeout(resizeTimeoutId);
+    }
+
+    resizeTimeoutId = window.setTimeout(() => {
+        iniciarAR();
+        mudouOrientacao = false;
+    }, 250);
+};
+
+const trocarCamera = (modo) => {
+    if (cameraMode.value === modo) return;
+    cameraMode.value = modo;
+    iniciarAR();
 };
 
 const voltarParaLanding = () => {
@@ -112,34 +191,38 @@ const voltarParaLanding = () => {
 onMounted(() => {
     htmlClasseAnterior = document.documentElement.className;
     bodyClasseAnterior = document.body.className;
+    appClasseAnterior = document.getElementById('app')?.className || '';
+
     document.documentElement.classList.add('ar-mode');
     document.body.classList.add('ar-mode');
+    document.getElementById('app')?.classList.add('ar-mode');
+
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
 
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    arJsConfig.value = [
-        'trackingMethod: best',
-        'sourceType: webcam',
-        `sourceWidth: ${viewportWidth}`,
-        `sourceHeight: ${viewportHeight}`,
-        `displayWidth: ${viewportWidth}`,
-        `displayHeight: ${viewportHeight}`,
-        'debugUIEnabled: false'
-    ].join('; ') + ';';
+    atualizarViewport();
+    window.addEventListener('orientationchange', tratarMudancaDeOrientacao, { passive: true });
 
     iniciarAR();
 });
 
 onBeforeUnmount(() => {
+    window.removeEventListener('orientationchange', tratarMudancaDeOrientacao);
+    if (resizeTimeoutId) {
+        window.clearTimeout(resizeTimeoutId);
+    }
+
     encerrarAR();
     document.documentElement.style.overflow = 'auto';
     document.body.style.overflow = 'auto';
     document.documentElement.classList.remove('ar-mode');
     document.body.classList.remove('ar-mode');
+    document.getElementById('app')?.classList.remove('ar-mode');
     document.documentElement.className = htmlClasseAnterior;
     document.body.className = bodyClasseAnterior;
+    if (document.getElementById('app')) {
+        document.getElementById('app').className = appClasseAnterior;
+    }
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 });
 </script>
@@ -154,6 +237,7 @@ onBeforeUnmount(() => {
     z-index: 9999;
     background: transparent;
     overflow: hidden;
+    min-height: calc(var(--app-vh, 1vh) * 100);
 }
 
 .ar-page.is-ready {
@@ -171,10 +255,7 @@ onBeforeUnmount(() => {
 }
 
 .btn-voltar {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10002;
+    z-index: 10003;
     padding: 10px 20px;
     background: #ff4444;
     color: #fff;
@@ -182,6 +263,44 @@ onBeforeUnmount(() => {
     font-family: "VT323", monospace;
     font-size: 1.25rem;
     cursor: pointer;
+}
+
+.ar-top-controls {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10003;
+    width: min(92vw, 540px);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+}
+
+.camera-switch {
+    display: inline-flex;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.btn-camera {
+    border: 0;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 12px;
+    font-family: "VT323", monospace;
+    font-size: 1.05rem;
+}
+
+.btn-camera.active {
+    background: #f4d35e;
+    color: #1e0635;
 }
 
 .ar-loader {
@@ -212,6 +331,7 @@ onBeforeUnmount(() => {
 :global(#arjs-video),
 :global(.a-canvas),
 :global(canvas),
+:global(.a-canvas-container),
 :global(.arjs-video) {
     position: fixed !important;
     inset: 0 !important;
@@ -222,6 +342,8 @@ onBeforeUnmount(() => {
 }
 
 :global(a-scene.ar-scene),
+:global(a-scene),
+:global(a-scene .a-canvas),
 :global(a-scene.ar-scene canvas),
 :global(a-scene.ar-scene video) {
     position: fixed !important;
@@ -247,15 +369,47 @@ onBeforeUnmount(() => {
 :global(#arjs-video),
 :global(.arjs-video) {
     object-fit: cover !important;
-    transform: scaleX(-1) !important;
     transform-origin: center center !important;
     z-index: 9997 !important;
 }
 
+:global(html.ar-mode video),
+:global(html.ar-mode #arjs-video),
+:global(html.ar-mode .arjs-video) {
+    transform: scaleX(1) !important;
+}
+
+:global(html.ar-mode video[data-facing='user']),
+:global(html.ar-mode #arjs-video[data-facing='user']),
+:global(html.ar-mode .arjs-video[data-facing='user']) {
+    transform: scaleX(-1) !important;
+}
+
 :global(.a-canvas),
 :global(canvas) {
-    transform: scaleX(-1) !important;
+    transform: scaleX(1) !important;
     transform-origin: center center !important;
     z-index: 9998 !important;
+}
+
+@media (max-width: 640px) {
+    .ar-top-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .btn-voltar {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .camera-switch {
+        width: 100%;
+    }
+
+    .btn-camera {
+        flex: 1;
+    }
 }
 </style>
