@@ -3,7 +3,7 @@ name: Deploy do Projeto Vue
 on:
   push:
     branches:
-      - first-marathon
+      - first-marathon 
 
 permissions:
   contents: read
@@ -22,8 +22,10 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          cache-dependency-path: 'the-code-arena/package-lock.json'
 
       - name: Instalar dependências e Build
+        working-directory: ./the-code-arena
         run: |
           npm install
           npm run build
@@ -34,7 +36,7 @@ jobs:
       - name: Upload do artefato (pasta dist)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './the-code-arena/dist'
 
       - name: Deploy final
         id: deployment
