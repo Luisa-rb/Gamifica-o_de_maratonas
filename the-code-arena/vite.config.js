@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Gamificacao-de-maratonas/',
+  base: '/Gamificacao_de_maratonas/',
 
   plugins: [
     vue({
