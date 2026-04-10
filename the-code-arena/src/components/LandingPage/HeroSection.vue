@@ -2,23 +2,38 @@
   <section id="hero" class="hero">
     <div class="hero-inner">
       <h2 class="hero-title">Bem-vindo(a)!</h2>
-      <h3 class="hero-sub">Em breve, a Arena será seu refúgio nas maratonas de programação. Enquanto isso, escaneei seu bottom e veja a mágica acontecer!</h3>
-      <div class="ar-button">
-        <button @click="irParaAR" class="btn-pixel btn-ar">
+      <h3 class="hero-sub">Em breve, a Arena será seu refúgio nas maratonas de programação. Enquanto isso, escaneei seu
+        bottom e veja a mágica acontecer!</h3>
+      <div class="ar-button" v-if="!mostrarEscolha">
+        <button @click="mostrarEscolha = true" class="btn-pixel btn-ar">
           Escanear Botton
         </button>
+      </div>
+
+      <div v-else class="ar-choice-panel">
+        <p class="choice-title">Escolha onde abrir a Arena</p>
+        <div class="ar-button">
+          <button @click="irParaAR('ar-desktop')" class="btn-pixel btn-ar choice-button">
+            Computador
+          </button>
+          <button @click="irParaAR('ar-mobile')" class="btn-pixel btn-ar choice-button secondary">
+            Celular
+          </button>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const mostrarEscolha = ref(false);
 
-const irParaAR = () => {
-  router.push({ name: 'ar' });
+const irParaAR = (routeName) => {
+  router.push({ name: routeName });
 };
 </script>
 
@@ -52,7 +67,23 @@ const irParaAR = () => {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  flex-wrap: wrap; /* Garante que os botões quebrem linha no celular */
+  flex-wrap: wrap;
+}
+
+.ar-choice-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.choice-title {
+  color: #fff;
+  font-family: "VT323", monospace;
+  font-size: 1.7rem;
+  margin-bottom: 0.75rem;
 }
 
 .btn-pixel {
@@ -69,9 +100,21 @@ const irParaAR = () => {
   color: #1e0635;
 }
 
+.choice-button {
+  min-width: 180px;
+}
+
+.choice-button.secondary {
+  background-color: #3bceac;
+}
+
 @media(min-width:768px) {
   .hero-title {
     font-size: 4rem
+  }
+
+  .choice-title {
+    font-size: 2rem;
   }
 }
 </style>

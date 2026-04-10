@@ -57,7 +57,6 @@ const encerrarAR = () => {
     arIniciado.value = false;
     arPronto.value = false;
 
-    // Para qualquer stream ainda ligado pelos elementos de video.
     const videos = document.querySelectorAll('video');
     videos.forEach((video) => {
         const stream = video.srcObject;
@@ -68,7 +67,6 @@ const encerrarAR = () => {
         video.pause();
     });
 
-    // Remove elementos injetados pelo AR.js para evitar persistencia visual.
     const seletoresAR = [
         'video.arjs-video',
         '#arjs-video',
@@ -85,7 +83,6 @@ const encerrarAR = () => {
         document.querySelectorAll(seletor).forEach((el) => el.remove());
     });
 
-    // Restaura classes globais caso A-Frame/AR.js as tenha alterado.
     document.documentElement.className = htmlClasseAnterior;
     document.body.className = bodyClasseAnterior;
 };
@@ -106,14 +103,13 @@ const iniciarAR = async () => {
 
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'user' },
+            video: { facingMode: { ideal: 'environment' } },
             audio: false
         });
         stream.getTracks().forEach((track) => track.stop());
-
         arIniciado.value = true;
     } catch {
-        arErro.value = 'Permissao da camera bloqueada. Libere a camera nas configuracoes do navegador.';
+        arErro.value = 'Nao foi possivel abrir a camera traseira. Libere a permissao e tente novamente.';
     }
 };
 
@@ -155,7 +151,7 @@ onBeforeUnmount(() => {
     height: 100vh;
     height: 100svh;
     z-index: 9999;
-    background: #000;
+    background: transparent;
     overflow: hidden;
 }
 
