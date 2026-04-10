@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LandingPage from '../views/LandingPage.vue'
 import ARView from '../views/ARView.vue'
-import ARMobileView from '../views/ARMobileView.vue'
 
 const routes = [
     {
@@ -11,13 +10,8 @@ const routes = [
     },
     {
         path: '/ar',
-        name: 'ar-desktop',
+        name: 'ar', //referencia a rota para uma nova "página", que é o ARView.vue
         component: ARView
-    },
-    {
-        path: '/ar/mobile',
-        name: 'ar-mobile',
-        component: ARMobileView
     },
 ]
 
